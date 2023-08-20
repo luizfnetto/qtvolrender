@@ -1,11 +1,17 @@
 #ifndef GLWIDGET_H
 #define GLWIDGET_H
 
+#include <memory>
+
 #include <QWidget>
 
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
-#include <QOpenGLBuffer>
+#include <QOpenGLVertexArrayObject>
+
+QT_FORWARD_DECLARE_CLASS(QOpenGLShader)
+QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
+QT_FORWARD_DECLARE_CLASS(QOpenGLBuffer)
 
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
@@ -20,6 +26,17 @@ protected:
 
 private:
     void reset();
+
+    QOpenGLVertexArrayObject m_vao;
+
+    QOpenGLBuffer *m_ebo = nullptr;
+    QOpenGLBuffer *m_vbo = nullptr;
+    QOpenGLShader *m_vert_shader = nullptr;
+    QOpenGLShader *m_frag_shader = nullptr;
+    QOpenGLShaderProgram *m_program = nullptr;
+
+    int m_vertex_attr;
+
     QColor m_background;
     QMetaObject::Connection m_contextWatchConnection;
 };
