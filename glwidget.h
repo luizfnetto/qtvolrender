@@ -9,6 +9,8 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLVertexArrayObject>
 
+#include "cube.h"
+
 QT_FORWARD_DECLARE_CLASS(QOpenGLShader)
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 QT_FORWARD_DECLARE_CLASS(QOpenGLBuffer)
@@ -27,15 +29,11 @@ protected:
 private:
     void reset();
 
-    QOpenGLVertexArrayObject m_vao;
-
-    std::unique_ptr<QOpenGLBuffer> m_ebo;
-    std::unique_ptr<QOpenGLBuffer> m_vbo;
     std::unique_ptr<QOpenGLShader> m_vert_shader;
     std::unique_ptr<QOpenGLShader> m_frag_shader;
     std::unique_ptr<QOpenGLShaderProgram> m_program;
 
-    int m_vertex_attr;
+    Cube m_cube;
 
     QColor m_background;
     QMetaObject::Connection m_contextWatchConnection;

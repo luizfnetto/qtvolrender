@@ -8,7 +8,6 @@ using namespace std;
 
 GLWidget::GLWidget(const QColor &background)
     : m_background(background)
-    , m_vertex_attr(-1)
 {
 }
 
@@ -66,44 +65,14 @@ void GLWidget::initializeGL()
     m_program->addShader(m_frag_shader.get());
     m_program->link();
 
-    m_vertex_attr = m_program->attributeLocation("vertex");
-
-    float vertices[] = {
-        0.0f, 0.5f, 0.0f, // Top
-        -.5f, -.5f, 0.0f, // Botton left
-        0.5f, -.5f, 0.0f  // Botton right
-    };
-
-    unsigned int indices[] = {
-        0, 1, 2
-    };
-
-    m_vao.create();
-    m_vao.bind();
-
-
-    m_ebo = make_unique<QOpenGLBuffer>(QOpenGLBuffer::IndexBuffer);
-    m_ebo->create();
-    m_ebo->bind();
-    m_ebo->allocate(indices, sizeof(indices));
-
-    m_vbo = make_unique<QOpenGLBuffer>(QOpenGLBuffer::VertexBuffer);
-    m_vbo->create();
-    m_vbo->bind();
-    m_vbo->allocate(vertices, sizeof(vertices));
-
-    f->glEnableVertexAttribArray(0);
-    f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
-    m_vbo->release();
-    m_vao.release();
-
-    m_contextWatchConnection = QObject::connect(context(), &QOpenGLContext::aboutToBeDestroyed, context(), [this] { reset(); });
+    m_cube.init();
 
     f->glFrontFace(GL_CW);
     f->glCullFace(GL_FRONT);
     f->glEnable(GL_CULL_FACE);
     f->glEnable(GL_DEPTH_TEST);
+
+    m_contextWatchConnection = QObject::connect(context(), &QOpenGLContext::aboutToBeDestroyed, context(), [this] { reset(); });
 }
 
 void GLWidget::paintGL()
@@ -113,8 +82,8 @@ void GLWidget::paintGL()
     f->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     m_program->bind();
-    m_vao.bind();
-    f->glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
-//    f->glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    m_cube.draw();
+
     update();
 }
