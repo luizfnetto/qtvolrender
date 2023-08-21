@@ -4,8 +4,11 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
 
+using namespace std;
+
 GLWidget::GLWidget(const QColor &background)
     : m_background(background)
+    , m_vertex_attr(-1)
 {
 }
 
@@ -52,15 +55,15 @@ void GLWidget::initializeGL()
 {
     QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
 
-    m_vert_shader = new QOpenGLShader(QOpenGLShader::Vertex);
+    m_vert_shader = make_unique<QOpenGLShader>(QOpenGLShader::Vertex);
     m_vert_shader->compileSourceCode(versionedShaderCode(vertexShaderSource));
 
-    m_frag_shader = new QOpenGLShader(QOpenGLShader::Fragment);
+    m_frag_shader = make_unique<QOpenGLShader>(QOpenGLShader::Fragment);
     m_frag_shader->compileSourceCode(versionedShaderCode(fragmentShaderSource));
 
-    m_program = new QOpenGLShaderProgram(this);
-    m_program->addShader(m_vert_shader);
-    m_program->addShader(m_frag_shader);
+    m_program = make_unique<QOpenGLShaderProgram>(this);
+    m_program->addShader(m_vert_shader.get());
+    m_program->addShader(m_frag_shader.get());
     m_program->link();
 
     m_vertex_attr = m_program->attributeLocation("vertex");
@@ -79,12 +82,12 @@ void GLWidget::initializeGL()
     m_vao.bind();
 
 
-    m_ebo = new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+    m_ebo = make_unique<QOpenGLBuffer>(QOpenGLBuffer::IndexBuffer);
     m_ebo->create();
     m_ebo->bind();
     m_ebo->allocate(indices, sizeof(indices));
 
-    m_vbo = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    m_vbo = make_unique<QOpenGLBuffer>(QOpenGLBuffer::VertexBuffer);
     m_vbo->create();
     m_vbo->bind();
     m_vbo->allocate(vertices, sizeof(vertices));

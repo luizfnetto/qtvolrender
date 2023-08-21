@@ -29,11 +29,11 @@ private:
 
     QOpenGLVertexArrayObject m_vao;
 
-    QOpenGLBuffer *m_ebo = nullptr;
-    QOpenGLBuffer *m_vbo = nullptr;
-    QOpenGLShader *m_vert_shader = nullptr;
-    QOpenGLShader *m_frag_shader = nullptr;
-    QOpenGLShaderProgram *m_program = nullptr;
+    std::unique_ptr<QOpenGLBuffer> m_ebo;
+    std::unique_ptr<QOpenGLBuffer> m_vbo;
+    std::unique_ptr<QOpenGLShader> m_vert_shader;
+    std::unique_ptr<QOpenGLShader> m_frag_shader;
+    std::unique_ptr<QOpenGLShaderProgram> m_program;
 
     int m_vertex_attr;
 
