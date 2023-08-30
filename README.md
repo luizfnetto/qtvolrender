@@ -9,7 +9,7 @@ The intent is a personal refresh of my OpenGL and SciVis skills, and to build so
 At the moment there is just a simple rendering of a given volume dataset.
 
 The following roadmap is planned:
-- [x] Create a MVP with 
+- [x] Create a MVP with the volume rendering running 
 - [ ] Create a volume data class
 - [ ] Add camera
 - [ ] Build UI to control vol. rendering params.
