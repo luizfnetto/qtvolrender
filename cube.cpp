@@ -6,26 +6,24 @@ using namespace std;
 
 Cube::Cube()
 {
-
 }
 
 Cube::~Cube()
 {
-
 }
 
 void Cube::init()
 {
     QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
     GLfloat vertices[] = {
-        -.5f, -.5f, 0.0f,
-        0.5f, -.5f, 0.0f,
-        0.5f, 0.5f, 0.0f,
-        -.5f, 0.5f, 0.0f,
-        -.5f, -.5f, -.0f,
-        0.5f, -.5f, -.0f,
-        0.5f, 0.5f, -.0f,
-        -.5f, 0.5f, -.0f
+        -.5f, -.5f, 0.5f,
+        0.5f, -.5f, 0.5f,
+        0.5f, 0.5f, 0.5f,
+        -.5f, 0.5f, 0.5f,
+        -.5f, -.5f, -.5f,
+        0.5f, -.5f, -.5f,
+        0.5f, 0.5f, -.5f,
+        -.5f, 0.5f, -.5f
     };
 
     GLuint indices[] {

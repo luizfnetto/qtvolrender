@@ -9,7 +9,7 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLVertexArrayObject>
 
-#include "cube.h"
+#include "volumerender.h"
 
 QT_FORWARD_DECLARE_CLASS(QOpenGLShader)
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
@@ -29,11 +29,7 @@ protected:
 private:
     void reset();
 
-    std::unique_ptr<QOpenGLShader> m_vert_shader;
-    std::unique_ptr<QOpenGLShader> m_frag_shader;
-    std::unique_ptr<QOpenGLShaderProgram> m_program;
-
-    Cube m_cube;
+    std::unique_ptr<VolumeRender> m_volume_render;
 
     QColor m_background;
     QMetaObject::Connection m_contextWatchConnection;

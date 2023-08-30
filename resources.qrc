@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>data/foot.raw</file>
+        <file>shaders/pre_pass.frag</file>
+        <file>shaders/pre_pass.vert</file>
+        <file>shaders/volume_pass.frag</file>
+        <file>shaders/volume_pass.vert</file>
+    </qresource>
+</RCC>
