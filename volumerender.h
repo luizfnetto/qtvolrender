@@ -12,6 +12,8 @@ QT_FORWARD_DECLARE_CLASS(QOpenGLFramebufferObject)
 QT_FORWARD_DECLARE_CLASS(QOpenGLShader)
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 
+class VolumeData;
+
 class VolumeRender
 {
 public:
@@ -35,9 +37,6 @@ private:
 
     void volumePass();
 
-    // TODO: Move volume data to its own class
-    void openQtRawFile(QString path, int dim_size);
-
 private:
     int m_width {0};
     int m_height {0};
@@ -54,13 +53,9 @@ private:
     std::unique_ptr<QOpenGLShaderProgram> m_pre_pass_program;
     std::unique_ptr<QOpenGLShaderProgram> m_volume_pass_program;
 
-    GLuint m_volume_tex_id {0};
+    std::unique_ptr<VolumeData> m_volume_data;
 
-    //TODO: Move volume data to its own class
-    int dim_x {0};
-    int dim_y {0};
-    int dim_z {0};
-    std::vector<GLubyte> volume_data;
+    GLuint m_volume_tex_id {0};
 };
 
 #endif // VOLUMERENDER_H

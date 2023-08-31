@@ -24,6 +24,8 @@ set(PROJECT_SOURCES
         fboquad.h
         volumerender.cpp
         volumerender.h
+        volumedata.cpp
+        volumedata.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

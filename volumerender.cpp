@@ -6,6 +6,8 @@
 #include <QDir>
 #include <QDebug>
 
+#include "volumedata.h"
+
 using namespace std;
 
 VolumeRender::VolumeRender()
@@ -44,16 +46,12 @@ void VolumeRender::init()
     m_fboquad.init();
     m_cube.init();
 
-    // TODO: Temporary code load
-    openQtRawFile(":data/foot.raw", 256);
-
-    // 3D Volume Data
-    vector<float> fVolData(volume_data.size());
-    for (int i = 0; i < volume_data.size(); i++)
-        fVolData[i] = static_cast<float>(volume_data[i])/255.f;
+    // TODO: Temporary loading data here
+    m_volume_data = make_unique<VolumeData>(":data/foot.raw", 256);
+    auto [dim_x, dim_y, dim_z] = m_volume_data->GetDimesionsSizes();
 
     glBindTexture (GL_TEXTURE_3D, m_volume_tex_id);
-    glTexImage3D(GL_TEXTURE_3D, 0, GL_R32F, dim_x, dim_y, dim_z, 0, GL_RED, GL_FLOAT, fVolData.data());
+    glTexImage3D(GL_TEXTURE_3D, 0, GL_R32F, dim_x, dim_y, dim_z, 0, GL_RED, GL_FLOAT, m_volume_data->GetNormalizedFloatData().data());
     glTexParameteri (GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri (GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri (GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
@@ -104,8 +102,8 @@ void VolumeRender::createFBOs()
 
 void VolumeRender::createTextureVolume()
 {
-    if (dim_x == 0 || dim_y == 0 || dim_z == 0)
-        return;
+//    if (dim_x == 0 || dim_y == 0 || dim_z == 0)
+//        return;
 
 //TODO:
 //    glBindTexture(GL_TEXTURE_3D, m_volume_tex_id);
@@ -193,29 +191,4 @@ void VolumeRender::volumePass()
 
     glActiveTexture (GL_TEXTURE0);
     glBindTexture (GL_TEXTURE_2D, 0);
-}
-
-void VolumeRender::openQtRawFile(QString path, int dim_size)
-{
-    QFile file(path);
-
-    if (file.open(QIODevice::ReadOnly)) {
-        qDebug() << "File: "<< path << "Dim. Size: " << dim_size;
-
-        dim_x = dim_size;
-        dim_y = dim_size;
-        dim_z = dim_size;
-
-        QByteArray tmpData = file.readAll();
-        volume_data.clear();
-        volume_data.resize(tmpData.size());
-
-        for (int i = 0; i < tmpData.size(); i++)
-            volume_data[i] = tmpData[i];
-
-    } else {
-        qDebug() << "File not found in: " << path;
-    }
-
-    file.close();
 }
