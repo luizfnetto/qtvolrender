@@ -10,9 +10,10 @@ At the moment there is just a simple rendering of a given volume dataset.
 
 The following roadmap is planned:
 - [x] Create a MVP with the volume rendering running 
-- [ ] Create a volume data class
+- [X] Create a volume data class
 - [ ] Add camera
-- [ ] Build UI to control vol. rendering params.
+- [ ] Build UI to control rendering params
+- [ ] Allow UI to change the loaded dataset
 - [ ] Add support to some transfer functions
 
 ### Current output (30/08/2023)
