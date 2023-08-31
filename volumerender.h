@@ -2,7 +2,6 @@
 #define VOLUMERENDER_H
 
 #include <vector>
-#include <string>
 #include <memory>
 #include <QMatrix4x4>
 
@@ -40,8 +39,8 @@ private:
     void openQtRawFile(QString path, int dim_size);
 
 private:
-    int m_width;
-    int m_height;
+    int m_width {0};
+    int m_height {0};
 
     QMatrix4x4 m_projection;
     QMatrix4x4 m_modelview;
@@ -55,12 +54,12 @@ private:
     std::unique_ptr<QOpenGLShaderProgram> m_pre_pass_program;
     std::unique_ptr<QOpenGLShaderProgram> m_volume_pass_program;
 
-    GLuint m_volume_tex_id;
+    GLuint m_volume_tex_id {0};
 
     //TODO: Move volume data to its own class
-    int dim_x;
-    int dim_y;
-    int dim_z;
+    int dim_x {0};
+    int dim_y {0};
+    int dim_z {0};
     std::vector<GLubyte> volume_data;
 };
 

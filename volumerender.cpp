@@ -9,12 +9,6 @@
 using namespace std;
 
 VolumeRender::VolumeRender()
-    : m_width(0)
-    , m_height(0)
-    , dim_x(0)
-    , dim_y(0)
-    , dim_z(0)
-    , m_volume_tex_id(0)
 {
 
 }
