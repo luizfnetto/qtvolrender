@@ -11,13 +11,14 @@ At the moment there is just a simple rendering of a given volume dataset.
 The following roadmap is planned:
 - [x] Create a MVP with the volume rendering running 
 - [X] Create a volume data class
-- [ ] Add camera
+- [X] Add camera
 - [ ] Build UI to control rendering params
 - [ ] Allow UI to change the loaded dataset
 - [ ] Add support to some transfer functions
 
-### Current output (30/08/2023)
-![image](https://github.com/luizfnetto/qtvolrender/assets/7663523/8994046b-32ae-43e7-841f-68f96e4c0c85)
+### Current output (04/09/2023)
+![foot](https://github.com/luizfnetto/qtvolrender/assets/7663523/53dfae46-f145-48af-beb0-8a1a1fbf9b14)
+
 
 ### References
 
