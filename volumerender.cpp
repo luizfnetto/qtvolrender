@@ -5,6 +5,7 @@
 #include <QOpenGLShaderProgram>
 #include <QDir>
 #include <QDebug>
+#include <QStandardPaths>
 
 #include "volumedata.h"
 
@@ -28,6 +29,8 @@ void VolumeRender::init()
     m_width = static_cast<int>(vp[2] - vp[0]);
     m_height = static_cast<int>(vp[3] - vp[1]);
 
+    m_camera = make_unique<Camera>(m_width, m_height);
+
     qDebug() << "void VolumeRender::init()\nPWD:" << QDir::currentPath();
     qDebug() << "VP: " << vp[0] << " " << vp[1] << " " << vp[2] << " " << vp[3];
 
@@ -46,12 +49,22 @@ void VolumeRender::init()
     m_fboquad.init();
     m_cube.init();
 
+
     // TODO: Temporary loading data here
-    m_volume_data = make_unique<VolumeData>(":data/foot.raw", 256);
+    QString base_path = QStandardPaths::locate(QStandardPaths::DocumentsLocation, "qtvolrender", QStandardPaths::LocateDirectory);
+//    m_volume_data = make_unique<VolumeData>(base_path + "/data/fuel.raw", 64, EVolumeDataType::UInt8);
+//    m_volume_data = make_unique<VolumeData>(base_path + "/data/hydrogenAtom.raw", 128, EVolumeDataType::UInt8);
+//    m_volume_data = make_unique<VolumeData>(base_path + "/data/bonsai.raw", 256, EVolumeDataType::UInt8);
+//    m_volume_data = make_unique<VolumeData>(base_path + "/data/skull_256x256x256_uint8.raw", 256, EVolumeDataType::UInt8);
+//    m_volume_data = make_unique<VolumeData>(base_path + "/data/bunny_512x512x361_uint16.raw", 512, 512, 361, EVolumeDataType::UInt16);
+
+    m_volume_data = make_unique<VolumeData>(":data/foot.raw", 256, EVolumeDataType::UInt8);
+
     auto [dim_x, dim_y, dim_z] = m_volume_data->GetDimesionsSizes();
 
+    glGenTextures(1, &m_volume_tex_id);
     glBindTexture (GL_TEXTURE_3D, m_volume_tex_id);
-    glTexImage3D(GL_TEXTURE_3D, 0, GL_R32F, dim_x, dim_y, dim_z, 0, GL_RED, GL_FLOAT, m_volume_data->GetNormalizedFloatData().data());
+    glTexImage3D(GL_TEXTURE_3D, 0, GL_R32F, dim_x, dim_y, dim_z, 0, GL_RED, GL_FLOAT, m_volume_data->GetNormalizedData().data());
     glTexParameteri (GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri (GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri (GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
@@ -66,10 +79,27 @@ void VolumeRender::render()
     if (!m_fbo_front || !m_fbo_back)
         return;
 
+    m_camera->update();
+
     fboDrawVolumeFront();
     fboDrawVolumeBack();
 
     volumePass();
+}
+
+void VolumeRender::resize(int width, int height)
+{
+    if (width == m_width && height == m_height)
+        return;
+
+    m_width = width;
+    m_height = height;
+
+    qDebug() << "updateWinDim";
+    qDebug() << "Params:" << width << " " << height;
+
+    createFBOs();
+    m_camera->resize(m_width, m_height);
 }
 
 void VolumeRender::createFBOs()
@@ -124,8 +154,12 @@ void VolumeRender::fboDrawVolumeBack()
 void VolumeRender::fboPrePass(GLenum cull_facing_mode)
 {
     m_pre_pass_program->bind();
-    m_pre_pass_program->setUniformValue("mvp", m_projection*m_modelview);
-    m_pre_pass_program->setUniformValue("modelView", m_modelview);
+    QMatrix4x4 model = m_cube.getTransform();
+//    model.rotate(90, 1, 0, 0); //bunny
+    QMatrix4x4 view = m_camera->getView();
+    QMatrix4x4 view_projection = m_camera->getViewProjection();
+    m_pre_pass_program->setUniformValue("mvp", view_projection*model);
+    m_pre_pass_program->setUniformValue("modelView", view*model);
 
     const GLenum bufs[] = {GL_COLOR_ATTACHMENT0};
     const GLfloat clear_color[] = {0.0f, 0.0f, 0.0f, 0.0f};

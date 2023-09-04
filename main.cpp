@@ -28,8 +28,23 @@ int main(int argc, char *argv[])
     QSurfaceFormat::setDefaultFormat(format);
 
     MainWindow w;
-    //w.showMaximized();
     w.resize(800, 600);
+
+// TODO: [Netto]
+// QT may have some bug when initializing maximized or with a size bigger than the available
+// The resizeCB is not called and the internal glViewport is outdated in the first frame
+// Quick and dirt fix is to skip the first paintGL call (?)
+// Other approach is to check through glviewport the size every redraw (expensive) or from time to
+// time (?)
+// Skipping the first frame fix the initialization but not when we manually set fullscreen from a
+// smaller window
+//
+// Maybe I'm skipping some step when setting up the window?
+// Uncomment the first or second line below to check
+//    w.showMaximized();
+//    w.showFullScreen();
+//    w.resize(1600, 1200);
+
     w.show();
     return a.exec();
 }

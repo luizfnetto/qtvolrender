@@ -25,9 +25,11 @@ public:
 protected:
     void paintGL() override;
     void initializeGL() override;
+    void resizeGL(int w, int h) override;
 
 private:
     void reset();
+    void updateWinSize();
 
     std::unique_ptr<VolumeRender> m_volume_render;
 

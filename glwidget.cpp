@@ -26,6 +26,18 @@ void GLWidget::reset()
     QObject::disconnect(m_contextWatchConnection);
 }
 
+void GLWidget::updateWinSize()
+{
+    GLint vp [4];
+    glGetIntegerv (GL_VIEWPORT, vp);
+    int width = static_cast<int>(vp[2] - vp[0]);
+    int height = static_cast<int>(vp[3] - vp[1]);
+
+    if(m_volume_render) {
+        m_volume_render->resize(width, height);
+    }
+}
+
 void GLWidget::initializeGL()
 {
     Q_INIT_RESOURCE(resources);
@@ -42,10 +54,17 @@ void GLWidget::initializeGL()
     m_contextWatchConnection = QObject::connect(context(), &QOpenGLContext::aboutToBeDestroyed, context(), [this] { reset(); });
 }
 
+void GLWidget::resizeGL(int w, int h)
+{
+    updateWinSize();
+}
+
 void GLWidget::paintGL()
 {
     glClearColor(m_background.redF(), m_background.greenF(), m_background.blueF(), 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    //    updateWinSize();
 
     if (!m_volume_render) {
         m_volume_render = make_unique<VolumeRender>();

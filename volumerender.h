@@ -7,6 +7,7 @@
 
 #include "fboquad.h"
 #include "cube.h"
+#include "camera.h"
 
 QT_FORWARD_DECLARE_CLASS(QOpenGLFramebufferObject)
 QT_FORWARD_DECLARE_CLASS(QOpenGLShader)
@@ -41,11 +42,10 @@ private:
     int m_width {0};
     int m_height {0};
 
-    QMatrix4x4 m_projection;
-    QMatrix4x4 m_modelview;
-
     FboQuad m_fboquad;
     Cube m_cube;
+
+    std::unique_ptr<Camera> m_camera;
 
     std::unique_ptr<QOpenGLFramebufferObject> m_fbo_front;
     std::unique_ptr<QOpenGLFramebufferObject> m_fbo_back;
