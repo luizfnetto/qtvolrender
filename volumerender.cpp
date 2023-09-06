@@ -49,7 +49,6 @@ void VolumeRender::init()
     m_fboquad.init();
     m_cube.init();
 
-
     // TODO: Temporary loading data here
     QString base_path = QStandardPaths::locate(QStandardPaths::DocumentsLocation, "qtvolrender", QStandardPaths::LocateDirectory);
 //    m_volume_data = make_unique<VolumeData>(base_path + "/data/fuel.raw", 64, EVolumeDataType::UInt8);
@@ -71,7 +70,6 @@ void VolumeRender::init()
     glTexParameteri (GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri (GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glBindTexture (GL_TEXTURE_3D, 0);
-
 }
 
 void VolumeRender::render()
@@ -100,6 +98,16 @@ void VolumeRender::resize(int width, int height)
 
     createFBOs();
     m_camera->resize(m_width, m_height);
+}
+
+void VolumeRender::SetRayStepSize(const float &ray_step_size)
+{
+    m_ray_step_size = ray_step_size;
+}
+
+void VolumeRender::SetMaxRayIterations(const int &ray_max_iter)
+{
+    m_ray_max_iter = ray_max_iter;
 }
 
 void VolumeRender::createFBOs()
@@ -194,6 +202,9 @@ void VolumeRender::volumePass()
 {
     m_volume_pass_program->bind();
     m_volume_pass_program->setUniformValue("winDim", (float)m_width, (float)m_height);
+
+    m_volume_pass_program->setUniformValue("stepSize", m_ray_step_size);
+    m_volume_pass_program->setUniformValue("maxIterations", m_ray_max_iter);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

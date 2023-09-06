@@ -10,11 +10,17 @@ using namespace std;
 GLWidget::GLWidget(const QColor &background)
     : m_background(background)
 {
+    m_volume_render_viewer = make_unique<VolumeRenderViewer>();
 }
 
 GLWidget::~GLWidget()
 {
     reset();
+}
+
+VolumeRenderViewer *GLWidget::getVolumeRenderViewer()
+{
+    return m_volume_render_viewer.get();
 }
 
 void GLWidget::reset()
@@ -33,9 +39,7 @@ void GLWidget::updateWinSize()
     int width = static_cast<int>(vp[2] - vp[0]);
     int height = static_cast<int>(vp[3] - vp[1]);
 
-    if(m_volume_render) {
-        m_volume_render->resize(width, height);
-    }
+    m_volume_render_viewer->resize(width, height);
 }
 
 void GLWidget::initializeGL()
@@ -66,12 +70,7 @@ void GLWidget::paintGL()
 
     //    updateWinSize();
 
-    if (!m_volume_render) {
-        m_volume_render = make_unique<VolumeRender>();
-        m_volume_render->init();
-    }
-
-    m_volume_render->render();
+    m_volume_render_viewer->render();
 
     update();
 }

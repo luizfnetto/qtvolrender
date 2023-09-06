@@ -25,6 +25,8 @@ public:
     void render();
     void resize(int width, int height);
 
+    void SetRayStepSize(const float &ray_step_size);
+    void SetMaxRayIterations(const int &max_ray_iter);
 private:
     void createFBOs();
     void createTextureVolume();
@@ -56,6 +58,9 @@ private:
     std::unique_ptr<VolumeData> m_volume_data;
 
     GLuint m_volume_tex_id {0};
+
+    float m_ray_step_size {0.1};
+    int m_ray_max_iter {256};
 };
 
 #endif // VOLUMERENDER_H

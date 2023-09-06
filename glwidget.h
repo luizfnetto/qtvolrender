@@ -9,7 +9,7 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLVertexArrayObject>
 
-#include "volumerender.h"
+#include "volumerenderviewer.h"
 
 QT_FORWARD_DECLARE_CLASS(QOpenGLShader)
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
@@ -22,6 +22,7 @@ public:
     GLWidget(const QColor &background);
     ~GLWidget();
 
+    VolumeRenderViewer* getVolumeRenderViewer();
 protected:
     void paintGL() override;
     void initializeGL() override;
@@ -31,7 +32,7 @@ private:
     void reset();
     void updateWinSize();
 
-    std::unique_ptr<VolumeRender> m_volume_render;
+    std::unique_ptr<VolumeRenderViewer> m_volume_render_viewer;
 
     QColor m_background;
     QMetaObject::Connection m_contextWatchConnection;
