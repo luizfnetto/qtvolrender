@@ -12,12 +12,13 @@ The following roadmap is planned:
 - [x] Create a MVP with the volume rendering running 
 - [X] Create a volume data class
 - [X] Add camera
-- [ ] Build UI to control rendering params
+- [X] Build UI to control rendering params
 - [ ] Allow UI to change the loaded dataset
 - [ ] Add support to some transfer functions
 
 ### Current output (04/09/2023)
-![foot](https://github.com/luizfnetto/qtvolrender/assets/7663523/53dfae46-f145-48af-beb0-8a1a1fbf9b14)
+![foot_ui](https://github.com/luizfnetto/qtvolrender/assets/7663523/81179f3e-4f0b-4c13-8ba6-3004b5dbc44e)
+
 
 
 ### References
