@@ -16,8 +16,9 @@ The following roadmap is planned:
 - [ ] Allow UI to change the loaded dataset
 - [ ] Add support to some transfer functions
 
-### Current output (04/09/2023)
-![foot_ui](https://github.com/luizfnetto/qtvolrender/assets/7663523/81179f3e-4f0b-4c13-8ba6-3004b5dbc44e)
+### Current output (11/09/2023)
+![foot_ui](https://github.com/luizfnetto/qtvolrender/assets/7663523/c45c3660-2a67-48e4-a5d5-b0fbf21653e9)
+
 
 
 
