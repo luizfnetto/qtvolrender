@@ -12,20 +12,28 @@ class DockWidget;
 class DockWidget : public QDockWidget
 {
     Q_OBJECT
-
 public:
     explicit DockWidget(MainWindow *parent = nullptr);
     ~DockWidget();
 
-    void setStepSizeLabels(MainWindow *parent = nullptr);
-    void setTotalStepsLabels(MainWindow *parent = nullptr);
+    void updateLineEditStepSize();
+    void updateLineEditStepTotal();
 
 private:
-    void setStepSizeValue (int v);
-    void setTotalStepsValue (int v);
+    void setupStepsLineEditValidators();
+
+    void lineEditStepSizeChanged();
+    void lineEditStepTotalChanged();
+
+    void setSliderStepSize(float v);
+    void sliderStepSizeChanged(int percent);
+
+    void setSliderStepTotal(int v);
+    void sliderStepTotalChanged(int percent);
 
 private:
-    Ui::DockWidget *ui;
+    Ui::DockWidget *m_ui {nullptr};
+    MainWindow *m_parent {nullptr};
 };
 
 #endif // DOCKWIDGET_H

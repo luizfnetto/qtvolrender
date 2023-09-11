@@ -18,35 +18,35 @@ MainWindow::~MainWindow()
 {
 }
 
-void MainWindow::setStepSizeValue(int v)
+void MainWindow::setStepSizeValue(float stepsize)
 {
     VolumeRenderViewer *vrv = m_glwidget->getVolumeRenderViewer();
     if (!vrv)
         return;
 
-    vrv->setShaderStepSize(v);
-    m_dock->setStepSizeLabels(this);
+    vrv->setShaderStepSize(stepsize);
+    m_dock->updateLineEditStepSize();
 }
 
-void MainWindow::setTotalStepsValue(int v)
+void MainWindow::setStepTotalValue(int steptotal)
 {
     VolumeRenderViewer *vrv = m_glwidget->getVolumeRenderViewer();
     if (!vrv)
         return;
 
-    vrv->setShaderTotalSteps(v);
-    m_dock->setTotalStepsLabels(this);
+    vrv->setShaderTotalSteps(steptotal);
+    m_dock->updateLineEditStepTotal();
 }
 
-std::tuple<float, float, float> MainWindow::getStepSizeParams()
+std::tuple<float, float> MainWindow::getStepSizeLimits()
 {
     VolumeRenderViewer *vrv = m_glwidget->getVolumeRenderViewer();
     if (!vrv)
-        return std::tuple<float, float, float>(0, 0,0);
-    return vrv->getShaderStepSizeParams();
+        return std::tuple<float, float>(0, 0);
+    return vrv->getShaderStepSizeLimits();
 }
 
-int MainWindow::getStepSizeValue()
+float MainWindow::getStepSizeValue()
 {
     VolumeRenderViewer *vrv = m_glwidget->getVolumeRenderViewer();
     if (!vrv)
@@ -54,15 +54,15 @@ int MainWindow::getStepSizeValue()
     return vrv->getShaderStepSize();
 }
 
-std::tuple<int, int, int> MainWindow::getTotalStepParams()
+std::tuple<int, int> MainWindow::getTotalStepLimits()
 {
     VolumeRenderViewer *vrv = m_glwidget->getVolumeRenderViewer();
     if (!vrv)
-        return std::tuple<int, int, int>(0, 0,0);
-    return vrv->getShaderTotalStepsParams();
+        return std::tuple<int, int>(0, 0);
+    return vrv->getShaderTotalStepsLimits();
 }
 
-int MainWindow::getTotalStepsValue()
+int MainWindow::getStepTotalValue()
 {
     VolumeRenderViewer *vrv = m_glwidget->getVolumeRenderViewer();
     if (!vrv)
@@ -78,5 +78,3 @@ void MainWindow::createDockWindows()
     m_dock->setFloating(false);
     m_dock->setFeatures(QDockWidget::NoDockWidgetFeatures);
 }
-
-

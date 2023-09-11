@@ -33,63 +33,45 @@ void VolumeRenderViewer::resize(int width, int height)
     m_volume_render->resize(width, height);
 }
 
-void VolumeRenderViewer::setShaderStepSize(int stepsize_percent)
+void VolumeRenderViewer::setShaderStepSize(float stepsize)
 {
-    float p = static_cast<float>(stepsize_percent)/100.f;
+    if (stepsize < m_min_stepsize)
+        m_stepsize = m_min_stepsize;
+    else if (stepsize > m_max_stepsize)
+        m_stepsize = m_max_stepsize;
+    else
+        m_stepsize = stepsize;
 
-    if (p < 0.f)
-        p = 0.f;
-
-    if (p > 1.f)
-        p = 1.f;
-
-    m_stepsize = p*(m_max_stepsize - m_min_stepsize) + m_min_stepsize;
-    qDebug() << m_stepsize;
+    qDebug() << "setShaderStepSize: " << m_stepsize;
 }
 
-int VolumeRenderViewer::getShaderStepSize()
+float VolumeRenderViewer::getShaderStepSize()
 {
-    float pct = (m_stepsize - m_min_stepsize)/(m_max_stepsize - m_min_stepsize);
-    return static_cast<int>(pct*100.f);
+    return m_stepsize;
 }
 
-std::tuple<float, float, float> VolumeRenderViewer::getShaderStepSizeParams() {
-    return std::tuple<float, float, float>(m_min_stepsize, m_max_stepsize, m_stepsize);
+std::tuple<float, float> VolumeRenderViewer::getShaderStepSizeLimits() {
+    return std::tuple<float, float>(m_min_stepsize, m_max_stepsize);
 }
 
-void VolumeRenderViewer::setShaderTotalSteps(int steps_percent)
+void VolumeRenderViewer::setShaderTotalSteps(int steptotal)
 {
-    float p = static_cast<float>(steps_percent)/100.f;
+    if (steptotal < m_min_stepnum)
+        m_stepnum  = m_min_stepnum;
+    else if (steptotal > m_max_stepnum)
+        m_stepnum = m_max_stepnum;
+    else
+        m_stepnum = steptotal;
 
-    if (p < 0.f)
-        p = 0.f;
-
-    if (p > 1.f)
-        p = 1.f;
-
-    float min = static_cast<float>(m_min_stepnum);
-    float max = static_cast<float>(m_max_stepnum);
-    float v = p*(max - min) + min;
-    m_stepnum = static_cast<int>(v);
-    qDebug() << "setShaderTotalSteps" << m_stepnum;
+    qDebug() << "setShaderTotalSteps: " << m_stepnum;
 }
 
 int VolumeRenderViewer::getShaderTotalSteps()
 {
-    float min = static_cast<float>(m_min_stepnum);
-    float max = static_cast<float>(m_max_stepnum);
-    float v = static_cast<float>(m_stepnum);
-
-    v = (v - min)/(max - min);
-
-    return static_cast<int>(v*100.f);
+    return m_stepnum;
 }
 
-std::tuple<int, int, int> VolumeRenderViewer::getShaderTotalStepsParams()
+std::tuple<int, int> VolumeRenderViewer::getShaderTotalStepsLimits()
 {
-    return std::tuple<int, int, int>(m_min_stepnum, m_max_stepnum, m_stepnum);
+    return std::tuple<int, int>(m_min_stepnum, m_max_stepnum);
 }
-
-
-
-

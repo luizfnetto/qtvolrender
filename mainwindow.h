@@ -14,13 +14,14 @@ public:
     ~MainWindow();
 
 
-    std::tuple<float, float, float> getStepSizeParams();
-    int getStepSizeValue();
-    void setStepSizeValue (int v);
+    std::tuple<float, float> getStepSizeLimits();
+    float getStepSizeValue();
+    void setStepSizeValue(float stepsize);
 
-    std::tuple<int, int, int> getTotalStepParams();
-    int getTotalStepsValue();
-    void setTotalStepsValue (int v);
+    std::tuple<int, int> getTotalStepLimits();
+    int getStepTotalValue();
+    void setStepTotalValue(int steptotal);
+
 private:
     void createDockWindows();
 

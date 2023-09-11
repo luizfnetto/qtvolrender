@@ -28,6 +28,11 @@ set(PROJECT_SOURCES
         volumedata.h
         camera.cpp
         camera.h
+        dockwidget.cpp
+        dockwidget.h
+        dockwidget.ui
+        volumerenderviewer.cpp
+        volumerenderviewer.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -35,8 +40,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         resources.qrc
-        dockwidget.h dockwidget.cpp dockwidget.ui
-        volumerenderviewer.h volumerenderviewer.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET qtvolrender APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

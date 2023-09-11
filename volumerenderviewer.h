@@ -15,13 +15,13 @@ public:
     void resize(int width, int height);
 
 
-    void setShaderStepSize(int stepsize_percent);
-    int getShaderStepSize();
-    std::tuple<float, float, float> getShaderStepSizeParams();
+    void setShaderStepSize(float stepsize);
+    float getShaderStepSize();
+    std::tuple<float, float> getShaderStepSizeLimits();
 
-    void setShaderTotalSteps(int steps_percent);
+    void setShaderTotalSteps(int steptotal);
     int getShaderTotalSteps();
-    std::tuple<int, int, int> getShaderTotalStepsParams();
+    std::tuple<int, int> getShaderTotalStepsLimits();
 
 private:
     std::unique_ptr<VolumeRender> m_volume_render;
